@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :movies
 
   get "about/index"
   root 'about#index'

@@ -1,7 +1,12 @@
 Rails.application.routes.draw do
   devise_for :users
   resources :movies do
-    resources :reviews 
+    member do
+      post :favorite
+      post :out
+    end
+
+    resources :reviews
   end
 
   get "about/index"

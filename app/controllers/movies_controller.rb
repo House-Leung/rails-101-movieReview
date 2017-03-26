@@ -7,7 +7,7 @@ class MoviesController < ApplicationController
 
   def show
     @movie = Movie.find(params[:id])
-    @reviews = @movie.reviews.recent.paginate(:page => params[:page], :per_page => 5) 
+    @reviews = @movie.reviews.recent.paginate(:page => params[:page], :per_page => 5)
   end
 
   def edit
@@ -39,6 +39,32 @@ class MoviesController < ApplicationController
   def destroy
     @movie.destroy
       redirect_to movies_path,  alert: "Movie Deleted"
+  end
+
+  def favorite
+    @movie = Movie.find(params[:id])
+
+    if !current_user.is_member_of?(@movie)
+      current_user.favorite!(@movie)
+      flash[:notice] = "收藏电影成功！"
+    else
+      flash[:warning] = "你已经收藏该电影了！"
+    end
+
+    redirect_to movie_path(@movie)
+  end
+
+  def out
+    @movie = Movie.find(params[:id])
+
+    if  current_user.is_member_of?(@movie)
+      current_user.out!(@movie)
+      flash[:alert] = "已取消收藏该电影！"
+    else
+      flash[:warning] = "你没有收藏这电影，怎么取消？"
+    end
+
+    redirect_to movie_path(@movie)
   end
 
   private

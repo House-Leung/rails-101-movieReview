@@ -10,7 +10,8 @@ Rails.application.routes.draw do
   end
 
   namespace :account do
-    resources :movies 
+    resources :movies
+    resources :reviews 
   end
 
   get "about/index"
